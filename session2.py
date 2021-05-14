@@ -1,11 +1,12 @@
-# KINDLY GO THROUGH TEST FILE TO UNDERSTAND
 from typing import List
 import time
+import gc
+import sys
 
-# Here in this code we will be leaking memory because we are creating cyclic reference.
+# Here in this code we will be leaking memory because we are creating cyclic reference. 
 # Find that we are indeed making cyclic references.
 # Eventually memory will be released, but that is currently not happening immediately.
-# We have added a function called "clear_memory" but it is not able to do it's job. Fix it.
+# We have added a function called "clear_memory" but it is not able to do it's job. Fix it. 
 # Refer to test_clear_memory Test in test_session2.py to see how we're crudely finding that
 # this code is sub-optimal.
 class Something(object):
@@ -13,6 +14,9 @@ class Something(object):
     def __init__(self):
         super().__init__()
         self.something_new = None
+
+    def __repr__(self):
+        return 'something_new is pointing to {0}'.format(self.something_new)
 
 
 class SomethingNew(object):
@@ -22,20 +26,24 @@ class SomethingNew(object):
         self.i = i
         self.something = something
 
+    def __repr__(self):
+        return 'i is pointing to {0}'.format(self.i)
+
 
 def add_something(collection: List[Something], i: int):
     something = Something()
     something.something_new = SomethingNew(i, something)
     collection.append(something)
 
-def reserved_Function():
+def reserved_function():
     # to be used in future if required
     pass
 
 def clear_memory(collection: List[Something]):
     # you probably need to add some comment here
-    collection.clear()
 
+    collection.clear()
+    gc.collect()
 
 def critical_function():
     collection = list()
@@ -62,4 +70,10 @@ def compare_strings_old(n):
 
 # YOU NEED TO CHANGE THIS PROGRAM
 def compare_strings_new(n):
-    time.sleep(6) # remove this line, this is just to simulate your "slow" code
+    a = sys.intern('a long string that is not intered' * 200)
+    b = sys.intern('a long string that is not intered' * 200)
+    for i in range(n):
+        if a is b:
+            pass
+        if 'd' in set(a):
+            pass
