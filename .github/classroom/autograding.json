@@ -1,0 +1,14 @@
+{
+  "tests": [
+    {
+      "name": "session_2_test",
+      "setup": "sudo -H pip3 install memory_profiler pytest",
+      "run": "pytest",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": null
+    }
+  ]
+}
