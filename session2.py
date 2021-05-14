@@ -72,8 +72,9 @@ def compare_strings_old(n):
 def compare_strings_new(n):
     a = sys.intern('a long string that is not intered' * 200)
     b = sys.intern('a long string that is not intered' * 200)
+    char_set=set(a)
     for i in range(n):
         if a is b:
             pass
-        if 'd' in set(a):
+        if 'd' in char_set:
             pass
